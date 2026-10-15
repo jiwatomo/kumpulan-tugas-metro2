@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/style.css">
+    <title>tugas2frontend</title>
+</head>
+<body>
+    <nav class="bg-neutral-primary border-default">
+          <div class="flex flex-wrap items-center justify-center max-w-screen-xl mx-auto p-4">
+              <a class="font-['Mirava_Sans'] flex items-center space-x-3 rtl:space-x-reverse">
+                  <span class="self-center text-3xl font-semibold whitespace-nowrap text-heading">MyLibrary at <span class="text-unand">UNAND</span></span>
+              </a>
+          </div>
+      </nav>
+      <main class="ml-4 mr-4">
+          <h4 class="text-2xl font-bold justify-center">Library Books list</h2>
+          <div class="maintable mt-4">
+              <a href="#" data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="font-medium text-fg-cyan hover:underline">+ Tambahkan Buku Baru</a>
+              <div class="mt-1 relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+                  <table class="w-full text-sm text-left rtl:text-right text-body">
+                      <thead class="text-sm text-white bg-fg-brand border-default-medium">
+                          <tr>
+                              <th scope="col" class="p-4">
+                                  <div class="flex items-center">
+                                      <input id="table-checkbox-38" type="checkbox" value="" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+                                      <label for="table-checkbox-38" class="sr-only">Table checkbox</label>
+                                  </div>
+                              </th>
+                              <th scope="col" class="px-6 py-3 font-medium">
+                                  Identitas
+                              </th>
+                              <th scope="col" class="px-6 py-3 font-medium">
+                                  Nama Buku
+                              </th>
+                              <th scope="col" class="px-6 py-3 font-medium">
+                                  Tahun Terbit
+                              </th>
+                              <th scope="col" class="px-6 py-3 font-medium">
+                                  Kategori
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Lokasi
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Edit
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
+                            <td class="w-4 p-4">
+                                <div class="flex items-center">
+                                    <input id="table-checkbox-39" type="checkbox" value="" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+                                    <label for="table-checkbox-39" class="sr-only">Table checkbox</label>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 w-1">1</td>
+                            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">Matematic and Ethical</th>
+                            <td class="px-6 py-4 w-1">2024</td>
+                            <td class="px-6 py-4 w-2">MIPA</td>
+                            <td class="px-6 py-4">Rak 2, Baris 1</td>
+                            <td class="flex items-center px-6 py-4 w-1">
+                                <a href="#" data-modal-target="crud-modal-edit" data-modal-toggle="crud-modal-edit" class="font-medium text-fg-cyan hover:underline">Edit</a>
+                                <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="font-medium text-danger hover:underline ms-3">Remove</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+          </div>
+      </main>
+      <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+              <!-- Modal content -->
+              <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
+                  <!-- Modal header -->
+                  <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5">
+                      <h3 class="text-lg font-medium text-heading">
+                          Tambah Buku Baru
+                      </h3>
+                      <button type="button" class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="crud-modal">
+                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                          <span class="sr-only">Close modal</span>
+                      </button>
+                  </div>
+                  <!-- Modal body -->
+                  <form action="#">
+                      <div class="grid gap-4 grid-cols-2 py-4 md:py-6">
+                          <div class="col-span-2">
+                              <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama Buku</label>
+                              <input type="text" name="name" id="name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan nama buku" required="">
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Tahun Terbit</label>
+                              <input type="text" name="terbit" id="terbit" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Tahun terbit" required="">
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="category" class="block mb-2.5 text-sm font-medium text-heading">kategori</label>
+                              <select id="category" class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand px-3 py-2.5 shadow-xs placeholder:text-body">
+                                  <option selected="">Sejarah</option>
+                                  <option value="TV">Teknologi</option>
+                                  <option value="PC">MIPA</option>
+                                  <option value="GA">Ekonomi</option>
+                                  <option value="PH">Hukum</option>
+                              </select>
+                          </div>
+                          <div class="col-span-2">
+                              <label for="name" class="block mb-2.5 text-sm font-medium text-heading">DOI atau ISBN</label>
+                              <input type="text" name="name" id="name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan kode DOI/ISBN" required="">
+                          </div>
+                          <div class="col-span-2">
+                              <label for="description" class="block mb-2.5 text-sm font-medium text-heading">Lokasi buku</label>
+                              <textarea id="description" rows="4" class="block bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body" placeholder="Deskripsikan lokasi buku"></textarea>
+                        </div>
+                      </div>
+                      <div class="flex items-center space-x-4 border-t border-default pt-4 md:pt-6">
+                          <button type="submit" class="inline-flex items-center  text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                              <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/></svg>
+                              Tambah Buku ini
+                          </button>
+                          <button data-modal-hide="crud-modal" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Batalkan</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+      <div id="crud-modal-edit" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+              <!-- Modal content -->
+              <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
+                  <!-- Modal header -->
+                  <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5">
+                      <h3 class="text-lg font-medium text-heading">
+                          Edit Informasi Buku
+                      </h3>
+                      <button type="button" class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="crud-modal-edit">
+                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                          <span class="sr-only">Close modal</span>
+                      </button>
+                  </div>
+                  <!-- Modal body -->
+                  <form action="#">
+                      <div class="grid gap-4 grid-cols-2 py-4 md:py-6">
+                          <div class="col-span-2">
+                              <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama Buku</label>
+                              <input type="text" name="name" id="name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan nama buku" required="">
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Tahun Terbit</label>
+                              <input type="text" name="terbit" id="terbit" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Tahun terbit" required="">
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="category" class="block mb-2.5 text-sm font-medium text-heading">kategori</label>
+                              <select id="category" class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand px-3 py-2.5 shadow-xs placeholder:text-body">
+                                  <option selected="">Sejarah</option>
+                                  <option value="TV">Teknologi</option>
+                                  <option value="PC">MIPA</option>
+                                  <option value="GA">Ekonomi</option>
+                                  <option value="PH">Hukum</option>
+                              </select>
+                          </div>
+                          <div class="col-span-2">
+                              <label for="name" class="block mb-2.5 text-sm font-medium text-heading">DOI atau ISBN</label>
+                              <input type="text" name="name" id="name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan kode DOI/ISBN" required="">
+                          </div>
+                          <div class="col-span-2">
+                              <label for="description" class="block mb-2.5 text-sm font-medium text-heading">Lokasi buku</label>
+                              <textarea id="description" rows="4" class="block bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body" placeholder="Deskripsikan lokasi buku"></textarea>
+                        </div>
+                      </div>
+                      <div class="flex items-center space-x-4 border-t border-default pt-4 md:pt-6">
+                          <button type="submit" class="inline-flex items-center  text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                              <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/></svg>
+                              Simpan Perubahan
+                          </button>
+                          <button data-modal-hide="crud-modal" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Batalkan</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+      <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+              <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
+                      <button type="button" class="absolute top-3 end-2.5 text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
+                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                          <span class="sr-only">Close modal</span>
+                      </button>
+                  <div class="p-4 md:p-5 text-center">
+                      <svg class="mx-auto mb-4 text-fg-disabled w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                      <h3 class="mb-6 text-body">Apakah kamu yakin menghapus buku ini?</h3>
+                      <div class="flex items-center space-x-4 justify-center">
+                          <button data-modal-hide="popup-modal" type="button" class="text-white bg-danger box-border border border-transparent hover:bg-danger-strong focus:ring-4 focus:ring-danger-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                          Iya
+                          </button>
+                          <button data-modal-hide="popup-modal" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Tidak</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <script src="node_modules/flowbite/dist/flowbite.min.js"></script>
+  </body>
+</html>
