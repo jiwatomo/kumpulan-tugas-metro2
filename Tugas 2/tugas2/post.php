@@ -23,6 +23,8 @@
     $kategori     = trim($_POST['kategori'] ?? '');
     $isbn_doi     = trim($_POST['isbn_doi'] ?? '');
     $lokasi       = trim($_POST['lokasi'] ?? '');
+    $penerbit       = trim($_POST['penerbit'] ?? '');
+    $pengarang       = trim($_POST['pengarang'] ?? '');
 
     // var_dump($_POST);
     // exit;
@@ -33,7 +35,6 @@
     if ($judul === '') {
         $errors[] = 'Judul buku wajib diisi.';
     }
-
     if ($tahun_terbit === '' || !ctype_digit($tahun_terbit)) {
         $errors[] = 'Tahun terbit harus berupa angka.';
     } elseif ((int) $tahun_terbit < 1000 || (int) $tahun_terbit > (int) date('Y')) {
@@ -53,8 +54,8 @@
     }
 
     // Post buku baru
-    $sql = 'INSERT INTO buku (judul, tahun_terbit, kategori, isbn_doi, lokasi)
-            VALUES (?, ?, ?, ?, ?)';
+    $sql = 'INSERT INTO buku (judul, tahun_terbit, kategori, isbn_doi, lokasi, penerbit, pengarang)
+            VALUES (?, ?, ?, ?, ?, ?, ?)';
 
     $stmt = $conn->prepare($sql);
 
@@ -66,14 +67,18 @@
 
     $isbn_doi = $isbn_doi !== '' ? $isbn_doi : null;
     $lokasi   = $lokasi   !== '' ? $lokasi   : null;
+    $penerbit = $penerbit !== '' ? $penerbit : null;
+    $pengarang   = $pengarang   !== '' ? $pengarang   : null;
 
     $stmt->bind_param(
-        'sisss',
+        'sisssss',
         $judul,
         $tahun_terbit,
         $kategori,
         $isbn_doi,
-        $lokasi
+        $lokasi,
+        $penerbit,
+        $pengarang
     );
 
     if ($stmt->execute()) {

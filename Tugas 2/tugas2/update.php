@@ -23,6 +23,8 @@
     $kategori     = trim($_POST['edit-kategori'] ?? '');
     $isbn_doi     = trim($_POST['edit-isbn'] ?? '');
     $lokasi       = trim($_POST['edit-lokasi'] ?? '');
+    $penerbit      = trim($_POST['edit-penerbit'] ?? '');
+    $pengarang       = trim($_POST['edit-pengarang'] ?? '');
     // var_dump($_POST);
     // exit;
     $errors = [];
@@ -39,14 +41,16 @@
 
     $isbn_doi = $isbn_doi !== '' ? $isbn_doi : null;
     $lokasi   = $lokasi   !== '' ? $lokasi   : null;
+    $pengarang = $pengarang !== '' ? $pengarang : "Tidak di inputkan";
+    $penerbit   = $penerbit   !== '' ? $penerbit   : "Tidak di inputkan";
     $tahun    = (int) $tahun_terbit;
 
     $sql = 'UPDATE buku
-            SET judul = ?, tahun_terbit = ?, kategori = ?, isbn_doi = ?, lokasi = ?
+            SET judul = ?, tahun_terbit = ?, kategori = ?, isbn_doi = ?, lokasi = ?, penerbit = ?, pengarang = ?
             WHERE id = ?';
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sisssi', $judul, $tahun, $kategori, $isbn_doi, $lokasi, $id);
+    $stmt->bind_param('sisssssi', $judul, $tahun, $kategori, $isbn_doi, $lokasi, $penerbit, $pengarang, $id);
 
     if ($stmt->execute()) {
         $_SESSION['success'] = 'Buku berhasil diperbarui.';

@@ -22,7 +22,7 @@
     }
 
     // Query
-    $query1 = $conn->query('SELECT id, judul, tahun_terbit, kategori, isbn_doi, lokasi FROM buku');
+    $query1 = $conn->query('SELECT id, judul, tahun_terbit, kategori, isbn_doi, penerbit, pengarang, lokasi FROM buku');
     $bukus = $query1->fetch_all(MYSQLI_ASSOC);
 
     $query1->free();
@@ -42,14 +42,14 @@
 </head>
 <body>
     <?php if ($success): ?>
-        <div class="mt-1 flex items-start sm:items-center p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-success-soft border border-success-subtle" role="alert">
+        <div id="dAlert" class="mt-1 flex items-start sm:items-center p-4 mb-4 text-sm text-fg-success-strong rounded-base bg-success-soft border border-success-subtle" role="alert">
         <svg class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
         <p><span class="font-medium me-1">Sukses!</span>, <?= htmlspecialchars($success) ?></p>
         </div>
     <?php endif; ?>
 
     <?php if (!empty($errors)): ?>
-        <div class="mt-1 flex items-start sm:items-center p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle" role="alert">
+        <div id="dAlert" class="mt-1 flex items-start sm:items-center p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle" role="alert">
         <svg class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
         <p>
             <ul class="font-medium me-1 list-disc list-inside">
@@ -89,9 +89,6 @@
                             <th scope="col" class="px-6 py-3 font-medium">
                                 Lokasi
                             </th>
-                            <th scope="col" class="px-6 py-3 font-medium">
-                                Aksi
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,21 +98,18 @@
                         </tr>
                     <?php else: ?>
                     <?php foreach ($bukus as $buku): ?>
-                        <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
+                        <tr data-modal-target="crud-modal-info" data-modal-toggle="crud-modal-info" class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium" data-id="<?= (int) $buku['id'] ?>" data-judul="<?= htmlspecialchars($buku['judul'], ENT_QUOTES) ?>" data-tahun="<?= (int) $buku['tahun_terbit'] ?>" data-kategori="<?= htmlspecialchars($buku['kategori'], ENT_QUOTES) ?>" data-isbn="<?= htmlspecialchars($buku['isbn_doi'] ?? '', ENT_QUOTES) ?>" data-pengarang="<?= htmlspecialchars($buku['pengarang'] ?? '', ENT_QUOTES) ?>" data-penerbit="<?= htmlspecialchars($buku['penerbit'] ?? '', ENT_QUOTES) ?>" data-lokasi="<?= htmlspecialchars($buku['lokasi'] ?? '', ENT_QUOTES) ?>" class="font-medium text-fg-cyan hover:underline" onclick="SelectModal(this); fillInfoModal(this);">
                             <td class="px-6 py-4"><?= htmlspecialchars($buku['id']) ?></td>
                             <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap"><?= htmlspecialchars($buku['judul']) ?></th>
                             <td class="px-6 py-4"><?= htmlspecialchars($buku['tahun_terbit']) ?></td>
                             <td class="px-6 py-4"><?= htmlspecialchars($buku['kategori']) ?></td>
                             <td class="px-6 py-4"><?= htmlspecialchars($buku['lokasi']) ?></td>
-                            <td class="flex items-center px-6 py-4">
-                                <a href="#" data-modal-target="crud-modal-edit" data-modal-toggle="crud-modal-edit" data-id="<?= (int) $buku['id'] ?>" data-judul="<?= htmlspecialchars($buku['judul'], ENT_QUOTES) ?>" data-tahun="<?= (int) $buku['tahun_terbit'] ?>" data-kategori="<?= htmlspecialchars($buku['kategori'], ENT_QUOTES) ?>" data-isbn="<?= htmlspecialchars($buku['isbn_doi'] ?? '', ENT_QUOTES) ?>" data-lokasi="<?= htmlspecialchars($buku['lokasi'] ?? '', ENT_QUOTES) ?>" class="font-medium text-fg-cyan hover:underline" onclick="fillEditModal(this)" >Edit</a>
-                                <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-id="<?= (int) $buku['id'] ?>" class="font-medium text-danger hover:underline ms-3" onclick="fillRemoveModal(this)">Remove</a>
-                            </td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     </tbody>
                 </table>
+                <p class="text-sm">*Pilih Buku untuk melihat info lebih lanjut.</p>
               </div>
           </div>
       </main>
@@ -140,6 +134,14 @@
                           <div class="col-span-2">
                               <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Judul</label>
                               <input type="text" name="judul" id="judul" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan Judul" required="">
+                          </div>
+                          <div class="col-span-2">
+                              <label for="pengarang" class="block mb-2.5 text-sm font-medium text-heading">Pengarang</label>
+                              <input type="text" name="pengarang" id="pengarang" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan pengarang" required="">
+                          </div>
+                          <div class="col-span-2">
+                              <label for="penerbit" class="block mb-2.5 text-sm font-medium text-heading">Penerbit</label>
+                              <input type="text" name="penerbit" id="penerbit" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan penerbit" required="">
                           </div>
                           <div class="col-span-2 sm:col-span-1">
                               <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Tahun Terbit</label>
@@ -198,6 +200,14 @@
                               <label for="edit-judul" class="block mb-2.5 text-sm font-medium text-heading">Judul</label>
                               <input type="text" name="edit-judul" id="edit-judul" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan Judul" required="">
                           </div>
+                          <div class="col-span-2">
+                              <label for="pengarang" class="block mb-2.5 text-sm font-medium text-heading">Pengarang</label>
+                              <input type="text" name="edit-pengarang" id="edit-pengarang" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan pengarang" required="">
+                          </div>
+                          <div class="col-span-2">
+                              <label for="penerbit" class="block mb-2.5 text-sm font-medium text-heading">Penerbit</label>
+                              <input type="text" name="edit-penerbit" id="edit-penerbit" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Masukkan penerbit" required="">
+                          </div>
                           <div class="col-span-2 sm:col-span-1">
                               <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Tahun Terbit</label>
                               <input type="number" name="edit-terbit" id="edit-terbit" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Tahun terbit" required="">
@@ -218,7 +228,7 @@
                           </div>
                           <div class="col-span-2">
                               <label for="edit-lokasi" class="block mb-2.5 text-sm font-medium text-heading">Lokasi buku</label>
-                              <textarea id="edit-lokasi" rows="4" class="block bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body" placeholder="Deskripsikan lokasi buku"></textarea>
+                              <textarea id="edit-lokasi" rows="4" name="edit-lokasi" class="block bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body" placeholder="Deskripsikan lokasi buku"></textarea>
                         </div>
                       </div>
                       <div class="flex items-center space-x-4 border-t border-default pt-4 md:pt-6">
@@ -226,12 +236,81 @@
                               <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/></svg>
                               Simpan Perubahan
                           </button>
-                          <button data-modal-hide="crud-modal-edit" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Batalkan</button>
+                          <button data-modal-target="crud-modal-info" data-modal-toggle="crud-modal-info" data-modal-hide="crud-modal-edit" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Batalkan</button>
                       </div>
                   </form>
               </div>
           </div>
       </div>
+      <!--MODAL UNTUK INFO BUKU-->
+      <div id="crud-modal-info" tabindex="-1" aria-hidden="hidden" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+              <!-- Modal content -->
+              <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
+                  <!-- Modal header -->
+                  <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5">
+                      <h3 class="text-lg font-medium text-heading">
+                          Informasi Buku
+                      </h3>
+                      <button type="button" class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="crud-modal-info">
+                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                          <span class="sr-only">Close modal</span>
+                      </button>
+                  </div>
+                  <!-- Modal body -->
+                  <div class="container">
+                      <input type="number" name="edit-id" id="edit-id" class="hidden">
+                      <div class="grid gap-4 grid-cols-2 py-4 md:py-6">
+                          <div class="col-span-2">
+                              <label for="edit-judul" class="block mb-2.5 text-sm font-medium text-heading">Judul Buku</label>
+                              <h3 id="judul-info" class="block mb-2.5 text-xl">
+                                  Test
+                              </h3>
+                          </div>
+                          <div class="col-span-2">
+                              <label for="edit-judul" class="block mb-2.5 text-sm font-medium text-heading">Pengarang</label>
+                              <h3 id="pengarang-info" class="block mb-2.5 text-xl">
+                                  Test
+                              </h3>
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Penerbit</label>
+                              <h3 id="penerbit-info" class="block mb-2.5 text-base">
+                                  Test
+                              </h3>
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Tahun Terbit</label>
+                              <h3 id="terbit-info" class="block mb-2.5 text-base">
+                                  Test
+                              </h3>
+                          </div>
+                          <div class="col-span-2 sm:col-span-1">
+                              <label for="category" class="block mb-2.5 text-sm font-medium text-heading">Kategori</label>
+                              <h3 id="kategori-info" class="block mb-2.5 text-base">
+                                  Test
+                              </h3>
+                          </div>
+                          <div class="col-span-2">
+                              <label for="name" class="block mb-2.5 text-sm font-medium text-heading">DOI atau ISBN</label>
+                              <h3 id="isbn-info" class="block mb-2.5 text-base">
+                                  Test
+                              </h3>
+                          </div>
+                          <div class="col-span-2">
+                              <label for="edit-lokasi" class="block mb-2.5 text-sm font-medium text-heading">Lokasi buku</label>
+                              <p id="lokasi-info"></p>
+                      </div>
+                      <div class="flex items-center space-x-4 border-t border-default pt-4 md:pt-6">
+                          <button data-modal-target="crud-modal-edit" data-modal-toggle="crud-modal-edit" type="button" data-modal-hide="crud-modal-info" class="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" onclick="fillEditModal()">Edit</button>
+                          <button data-modal-target="popup-modal" data-modal-hide="crud-modal-info" data-modal-toggle="popup-modal" type="button" class="text-white bg-danger box-border border border-transparent hover:bg-danger-strong focus:ring-4 focus:ring-danger-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" onclick="fillRemoveModal()">Hapus</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--MODAL UNTUK KONFIRM-->
       <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
           <div class="relative p-4 w-full max-w-md max-h-full">
               <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
@@ -248,32 +327,59 @@
                             <button data-modal-hide="popup-modal" type="submit" class="text-white bg-danger box-border border border-transparent hover:bg-danger-strong focus:ring-4 focus:ring-danger-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                                 Iya
                             </button>
-                            <button data-modal-hide="popup-modal" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Tidak</button>
+                            <button data-modal-target="crud-modal-info" data-modal-toggle="crud-modal-info" data-modal-hide="popup-modal" type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Tidak</button>
                         </form>
                   </div>
               </div>
           </div>
       </div>
       <script>
-      function fillEditModal(a) {
-          const id       = a.dataset.id;
-          const judul    = a.dataset.judul;
-          const tahun    = a.dataset.tahun;
-          const kategori = a.dataset.kategori;
-          const isbn     = a.dataset.isbn;
-          const lokasi   = a.dataset.lokasi;
-
-          document.getElementById('edit-id').value    = id;
-          document.getElementById('edit-judul').value    = judul;
-          document.getElementById('edit-terbit').value    = tahun;
-          document.getElementById('edit-kategori').value = kategori;
-          document.getElementById('edit-isbn').value     = isbn;
-          document.getElementById('edit-lokasi').value   = lokasi;
+      let selectedBook = null;
+      function SelectModal(tr) {
+          selectedBook = {
+            id: tr.dataset.id,
+            judul: tr.dataset.judul,
+            tahun: tr.dataset.tahun,
+            kategori: tr.dataset.kategori,
+            isbn: tr.dataset.isbn,
+            lokasi: tr.dataset.lokasi,
+            pengarang: tr.dataset.pengarang,
+            penerbit: tr.dataset.penerbit
+          }
+          
+      }
+      function fillInfoModal() {
+          
+          console.log(selectedBook);
+          document.getElementById('judul-info').innerHTML    = selectedBook.judul;
+          document.getElementById('terbit-info').innerHTML    = selectedBook.tahun;
+          document.getElementById('kategori-info').innerHTML = selectedBook.kategori;
+          document.getElementById('isbn-info').innerHTML     = selectedBook.isbn;
+          document.getElementById('lokasi-info').innerHTML   = selectedBook.lokasi;
+          document.getElementById('penerbit-info').innerHTML   = selectedBook.penerbit;
+          document.getElementById('pengarang-info').innerHTML   = selectedBook.pengarang;
+      }
+      function fillEditModal() {
+          document.getElementById('edit-id').value    = selectedBook.id;
+          document.getElementById('edit-judul').value    = selectedBook.judul;
+          document.getElementById('edit-terbit').value    = selectedBook.tahun;
+          document.getElementById('edit-kategori').value = selectedBook.kategori;
+          document.getElementById('edit-isbn').value     = selectedBook.isbn;
+          document.getElementById('edit-lokasi').value   = selectedBook.lokasi;
+          document.getElementById('edit-penerbit').value   = selectedBook.penerbit;
+          document.getElementById('edit-pengarang').value   = selectedBook.pengarang;
       }
 
       function fillRemoveModal(a) {
-          document.getElementById('remove-id').value = a.dataset.id;
+          document.getElementById('remove-id').value = selectedBook.id;
       }
+      setTimeout(() => {
+        const alert = document.getElementById('dAlert');
+        if (!alert) return;
+    
+        alert.style.opacity = '0';                    // fade out
+        setTimeout(() => alert.remove(), 500);        // remove after fade (500ms = transition duration)
+      }, 3000);
       </script>
       <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
   </body>
